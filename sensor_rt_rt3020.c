@@ -94,7 +94,7 @@ static struct rt3020_dev *_rt3020_create(struct rt_sensor_intf *intf)
     if (rslt == RT3020_OK)
     {
         rslt = rt3020_soft_reset(_rt3020_dev);
-				rt3020_set_power_mode(RT3020_NORMAL_MODE, _rt3020_dev);
+	    rt3020_set_power_mode(RT3020_NORMAL_MODE, _rt3020_dev);
         /* Select the type of configuration to be modified */
         conf.type = RT3020_ACCEL;
 
@@ -105,7 +105,6 @@ static struct rt3020_dev *_rt3020_create(struct rt_sensor_intf *intf)
         conf.param.accel.odr = RT3020_ODR_25HZ;
         conf.param.accel.range = RT3020_4G_RANGE;
         conf.param.accel.data_src = RT3020_DATA_SRC_NORMAL;
-				//LOG_D("odr=%2x, range=%2x, src=%2x\r\n", conf.param.accel.odr, conf.param.accel.range,  conf.param.accel.data_src);
 
         /* Set the desired configurations to the sensor */
         rslt = rt3020_set_sensor_conf(&conf, 1, _rt3020_dev);
@@ -243,19 +242,15 @@ static rt_err_t rt3020_control(struct rt_sensor_device *sensor, int cmd, void *a
     switch (cmd)
     {
     case RT_SENSOR_CTRL_GET_ID:
-				LOG_D("RT_SENSOR_CTRL_GET_ID! \n");
         *(rt_uint8_t *)args = _rt3020_dev->chip_id;
         break;
     case RT_SENSOR_CTRL_SET_ODR:
-				LOG_D("RT_SENSOR_CTRL_SET_ODR! \n");
         result = _rt3020_set_odr(sensor, (rt_uint32_t)args & 0xffff);
         break;
     case RT_SENSOR_CTRL_SET_RANGE:
-				LOG_D("RT_SENSOR_CTRL_SET_RANGE! \n");
         result = _rt3020_set_range(sensor, (rt_uint32_t)args);
         break;
     case RT_SENSOR_CTRL_SET_POWER:
-				LOG_D("RT_SENSOR_CTRL_SET_POWER! \n");
         result = _rt3020_set_power(sensor, (rt_uint32_t)args & 0xff);
         break;
     default:
@@ -293,7 +288,7 @@ int rt_hw_rt3020_init(const char *name, struct rt_sensor_config *cfg)
         sensor_acce->info.type       = RT_SENSOR_CLASS_ACCE;
         sensor_acce->info.vendor     = RT_SENSOR_VENDOR_UNKNOWN;
         sensor_acce->info.model      = "rt3020_acce";
-        sensor_acce->info.unit       = RT_SENSOR_UNIT_PA;
+        sensor_acce->info.unit       = RT_SENSOR_UNIT_MG;
         sensor_acce->info.intf_type  = RT_SENSOR_INTF_I2C;
         sensor_acce->info.range_max  = 16000;
         sensor_acce->info.range_min  = 2000;
